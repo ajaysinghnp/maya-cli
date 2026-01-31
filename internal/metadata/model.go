@@ -7,33 +7,51 @@ const (
 	Series MediaType = "series"
 )
 
+// IDs struct to hold IMDB/TMDB as alternatives
 type IDs struct {
-	IMDB string `json:"imdb,omitempty"`
+	IMDB string `json:"imdbId,omitempty"`
 	TMDB string `json:"tmdb,omitempty"`
 }
 
+// Watch/source info
+type Source struct {
+	Label    string `json:"label"`              // e.g., "Hindi (No Ads)"
+	URL      string `json:"source"`             // the m3u8 or download link
+	LabelTag string `json:"labelTag,omitempty"` // optional
+}
+
+// Main metadata struct
 type Metadata struct {
-	Type MediaType `json:"type"`
+	// Core
+	Title    string    `json:"title"`
+	Year     int       `json:"releaseYear"`
+	Type     MediaType `json:"type"`
+	Category string    `json:"category"`
 
-	Title       string   `json:"title"`
-	Year        string   `json:"year,omitempty"`
-	ReleaseDate string   `json:"release_date,omitempty"`
-	Language    string   `json:"language,omitempty"`
-	Cast        []string `json:"cast,omitempty"`
-	Genres      []string `json:"genres,omitempty"`
-	IDs         IDs      `json:"ids,omitempty"`
+	// Dates
+	ReleaseDate string `json:"fullReleaseDate"`
 
-	// Series-specific
+	// Content
+	Language string   `json:"language"`
+	Genres   []string `json:"genre"`
+	Cast     []string `json:"castDetails"`
+
+	// IDs
+	IDs IDs `json:"ids"` // keep your IDs struct as-is, filled manually if needed
+
+	// Media
+	Thumbnail string   `json:"thumbnail"`
+	Sources   []Source `json:"watchLink"` // renamed from WatchLink
+
+	// TV-only (optional)
 	Season       int    `json:"season,omitempty"`
 	Episode      int    `json:"episode,omitempty"`
-	EpisodeTitle string `json:"episode_title,omitempty"`
+	EpisodeTitle string `json:"episodeTitle,omitempty"`
+	SeasonDir    string `json:"seasonDir,omitempty"`
 
-	// M3U8 URLs
-	M3U8URLs []string `json:"m3u8_urls,omitempty"`
-
-	// Computed paths
+	// Filesystem (runtime)
 	RootDir   string `json:"-"`
-	MediaDir  string `json:"-"`
-	SeasonDir string `json:"-"`
 	MediaFile string `json:"-"`
+
+	HlsSourceDomain string `json:"hlsSourceDomain"`
 }

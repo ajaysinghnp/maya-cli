@@ -6,6 +6,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/ajaysinghnp/maya-cli/utils"
 )
 
 func PromptUser(log Logger) (*Metadata, error) {
@@ -26,8 +28,9 @@ func PromptUser(log Logger) (*Metadata, error) {
 	meta.Title = strings.TrimSpace(meta.Title)
 
 	fmt.Print("Year (optional): ")
-	meta.Year, _ = reader.ReadString('\n')
-	meta.Year = strings.TrimSpace(meta.Year)
+	inputStr, _ := reader.ReadString('\n')
+	inputStr = strings.TrimSpace(inputStr)
+	meta.Year = utils.NormalizeYear(inputStr)
 
 	fmt.Print("TMDB ID (optional): ")
 	meta.IDs.TMDB, _ = reader.ReadString('\n')

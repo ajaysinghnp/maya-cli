@@ -3,10 +3,12 @@ package logger
 import (
 	"fmt"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
 	"github.com/ajaysinghnp/maya-cli/internal/logger/iface"
+	"github.com/ajaysinghnp/maya-cli/internal/metadata"
 )
 
 type Logger struct {
@@ -107,6 +109,64 @@ func (l *Logger) Error(msg string) {
 
 func (l *Logger) Success(msg string) {
 	l.logMessage("SUCCESS", bgGreen+black, green, msg)
+}
+
+// LogMetadata prints a Metadata struct in a clean, colorful format.
+func LogMetadata(m *metadata.Metadata) {
+	fmt.Println(bold + cyan + "Parsed Media Info:" + reset)
+	fmt.Println(cyan + "------------------" + reset)
+
+	if m.Title != "" {
+		fmt.Printf("%sTitle:%s        %s\n", yellow, reset, m.Title)
+	}
+	if m.Year != 0 {
+		fmt.Printf("%sYear:%s         %d\n", yellow, reset, m.Year)
+	}
+	if m.Type != "" {
+		fmt.Printf("%sType:%s         %s\n", yellow, reset, m.Type)
+	}
+	if m.Category != "" {
+		fmt.Printf("%sCategory:%s     %s\n", yellow, reset, m.Category)
+	}
+	if m.ReleaseDate != "" {
+		fmt.Printf("%sReleaseDate:%s  %s\n", yellow, reset, m.ReleaseDate)
+	}
+	if m.Language != "" {
+		fmt.Printf("%sLanguage:%s     %s\n", yellow, reset, m.Language)
+	}
+	if len(m.Genres) > 0 {
+		fmt.Printf("%sGenres:%s       %s\n", yellow, reset, strings.Join(m.Genres, ", "))
+	}
+	if len(m.Cast) > 0 {
+		fmt.Printf("%sCast:%s         %s\n", yellow, reset, strings.Join(m.Cast, ", "))
+	}
+	if m.IDs.IMDB != "" || m.IDs.TMDB != "" {
+		fmt.Println(bold + green + "IDs:" + reset)
+		if m.IDs.IMDB != "" {
+			fmt.Printf("  %sIMDB:%s %s\n", magenta, reset, m.IDs.IMDB)
+		}
+		if m.IDs.TMDB != "" {
+			fmt.Printf("  %sTMDB:%s %s\n", magenta, reset, m.IDs.TMDB)
+		}
+	}
+	if m.Thumbnail != "" {
+		fmt.Printf("%sThumbnail:%s    %s\n", yellow, reset, m.Thumbnail)
+	}
+	if len(m.Sources) > 0 {
+		fmt.Println(bold + green + "Sources:" + reset)
+		for _, s := range m.Sources {
+			fmt.Printf("  %s- %s:%s %s", cyan, s.Label, reset, s.URL)
+			if s.LabelTag != "" {
+				fmt.Printf(" (%s%s%s)", magenta, s.LabelTag, reset)
+			}
+			fmt.Println()
+		}
+	}
+	if m.HlsSourceDomain != "" {
+		fmt.Printf("%sHLS Domain:%s   %s\n", yellow, reset, m.HlsSourceDomain)
+	}
+
+	fmt.Println(cyan + "------------------" + reset)
 }
 
 // Implement the iface.Logger interface
