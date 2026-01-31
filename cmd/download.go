@@ -46,8 +46,6 @@ Examples:
 			log.Debug(fmt.Sprintf("Concurrency: %d", concurrency))
 		}
 
-		// Here you can call your downloader package logic
-		// downloader.StartDownload(url, output, resume, concurrency)
 		log.Info("Analyzing URL: " + url)
 
 		// Create downloader
@@ -58,7 +56,8 @@ Examples:
 			return
 		}
 
-		log.Info("Download completed successfully!")
+		// Use Success for completed download
+		log.Success("Download completed successfully!")
 	},
 }
 

@@ -33,7 +33,8 @@ Usage Examples:
 		log = logger.New(verbose, "") // empty string = no file logging by default
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Info("Welcome to Maya! Use `maya --help` to see available commands.")
+		// Use Success to greet the user
+		log.Success("Welcome to Maya! Use `maya --help` to see available commands.")
 	},
 }
 
