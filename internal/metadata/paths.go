@@ -3,18 +3,20 @@ package metadata
 import (
 	"fmt"
 	"path/filepath"
+
+	"github.com/ajaysinghnp/maya-cli/internal/logger/iface"
 )
 
-func (m *Metadata) BuildPaths(base string, ext string, log Logger) {
+func (m *Metadata) BuildPaths(base string, ext string, log iface.Logger) {
 	log.Info("Building media paths")
 
 	idPart := ""
 	if m.IDs.TMDB != "" {
 		idPart = " [tmdb-" + m.IDs.TMDB + "]"
-		log.Debug("Using TMDB ID: " + m.IDs.TMDB)
+		log.Success("Using TMDB ID: " + m.IDs.TMDB)
 	} else if m.IDs.IMDB != "" {
 		idPart = " [imdb-" + m.IDs.IMDB + "]"
-		log.Debug("Using IMDB ID: " + m.IDs.IMDB)
+		log.Success("Using IMDB ID: " + m.IDs.IMDB)
 	}
 
 	// Base defaults to current directory
@@ -36,14 +38,14 @@ func (m *Metadata) BuildPaths(base string, ext string, log Logger) {
 			fmt.Sprintf("%s (%s).%s", m.Title, m.Year, ext),
 		)
 
-		log.Info("Detected movie content")
-		log.Info("Movie directory: " + m.RootDir)
-		log.Info("Movie file: " + m.MediaFile)
+		log.Success("Detected movie content")
+		log.Success("Movie directory: " + m.RootDir)
+		log.Success("Movie file: " + m.MediaFile)
 		return
 	}
 
 	// Series
-	log.Info("Detected series content")
+	log.Success("Detected series content")
 
 	m.RootDir = filepath.Join(
 		base,
@@ -67,7 +69,7 @@ func (m *Metadata) BuildPaths(base string, ext string, log Logger) {
 		),
 	)
 
-	log.Info("Series root directory: " + m.RootDir)
-	log.Info("Season directory: " + m.SeasonDir)
-	log.Info("Episode file: " + m.MediaFile)
+	log.Success("Series root directory: " + m.RootDir)
+	log.Success("Season directory: " + m.SeasonDir)
+	log.Success("Episode file: " + m.MediaFile)
 }
