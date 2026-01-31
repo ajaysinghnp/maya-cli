@@ -29,4 +29,7 @@ type Metadata struct {
 	MediaDir  string `json:"-"`
 	SeasonDir string `json:"-"`
 	MediaFile string `json:"-"`
+
+	// New field: store extracted M3U8 URLs for this media
+	M3U8URLs []string `json:"-"`
 }
