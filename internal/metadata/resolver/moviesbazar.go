@@ -66,7 +66,7 @@ func fetchMoviesBazarMetadata(url string, log iface.Logger) (*metadata.Metadata,
 	}
 
 	log.Success(fmt.Sprintf(
-		"Fetched metadata for '%s' (%s)",
+		"Fetched metadata for '%s' (%d)",
 		meta.Title,
 		meta.Year,
 	))

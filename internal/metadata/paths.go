@@ -22,23 +22,23 @@ func (m *Metadata) BuildPaths(base string, ext string, log iface.Logger) {
 	// Base defaults to current directory
 	if base == "" {
 		base = "."
-		log.Debug("No output directory specified, using current directory")
+		log.Info("No output directory specified, using current directory")
 	} else {
-		log.Debug("Using output directory: " + base)
+		log.Info("Using output directory: " + base)
 	}
 
 	if m.Type == Movie {
 		m.RootDir = filepath.Join(
 			base,
-			fmt.Sprintf("%s (%s)%s", m.Title, m.Year, idPart),
+			fmt.Sprintf("%s (%d)%s", m.Title, m.Year, idPart),
 		)
 
 		m.MediaFile = filepath.Join(
 			m.RootDir,
-			fmt.Sprintf("%s (%s).%s", m.Title, m.Year, ext),
+			fmt.Sprintf("%s (%d).%s", m.Title, m.Year, ext),
 		)
 
-		log.Success("Detected movie content")
+		log.Success(fmt.Sprintf("Detected content: %s", m.Type))
 		log.Success("Movie directory: " + m.RootDir)
 		log.Success("Movie file: " + m.MediaFile)
 		return

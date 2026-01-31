@@ -33,6 +33,7 @@ func (d *Downloader) StartDownload(
 	if err != nil {
 		return err
 	}
+
 	d.log.Success("Metadata resolved successfully!")
 
 	// 2️⃣ Build paths (single source of truth)
@@ -59,20 +60,9 @@ func (d *Downloader) StartDownload(
 		})
 
 	case resolver.SourceMoviesBazar:
-		d.log.Info("Detected MoviesBazar webpage, extracting M3U8...")
-		m3u8URL, err := moviebazar.ExtractM3U8(url, d.log)
-		if err != nil {
-			d.log.Error("Failed to extract M3U8: " + err.Error())
-			return err
-		}
-		if m3u8URL == "" {
-			d.log.Warn("No M3U8 found on webpage")
-			return errors.New("no m3u8 found on webpage")
-		}
-		d.log.Success("M3U8 URL extracted successfully!")
-		return m3u8.Download(m3u8.Options{
-			URL:        m3u8URL,
-			Output:     meta.MediaFile,
+		d.log.Info("Initiating MoviesBazar download...")
+		return moviebazar.HandleMovie(moviebazar.Options{
+			Meta:       meta,
 			TempDir:    tempDir,
 			Resume:     resume,
 			Concurrent: concurrent,
